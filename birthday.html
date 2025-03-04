@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Coder!</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+        }
+        #birthday-text {
+            font-size: 40px;
+            font-weight: bold;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix"></canvas>
+    <div id="birthday-text"></div>
+    <script>
+        // Matrix Effect
+        const canvas = document.getElementById("matrix");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const letters = "010101101 Happy Birthday 10101011".split("");
+        const fontSize = 18;
+        const columns = canvas.width / fontSize;
+        const drops = Array.from({ length: columns }, () => 1);
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0f0";
+            ctx.font = `${fontSize}px monospace`;
+            drops.forEach((y, index) => {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, index * fontSize, y * fontSize);
+                drops[index] = y * fontSize > canvas.height || Math.random() > 0.975 ? 0 : y + 1;
+            });
+        }
+        setInterval(drawMatrix, 50);
+        
+        // Typing Effect
+        const message = "Happy Birthday, Coder! 🎉";
+        let i = 0;
+        function typeWriter() {
+            if (i < message.length) {
+                document.getElementById("birthday-text").innerHTML += message.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+        typeWriter();
+        
+        // Play 8-bit Birthday Song
+        const audio = new Audio("https://www.myinstants.com/media/sounds/8-bit-happy-birthday.mp3");
+        setTimeout(() => audio.play(), 2000);
+    </script>
+</body>
+</html>
